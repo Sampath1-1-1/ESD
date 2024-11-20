@@ -5,6 +5,7 @@ import com.sampath.assignment.dto.ProductDTO;
 import com.sampath.assignment.entity.Customer;
 import com.sampath.assignment.entity.Product;
 import com.sampath.assignment.helper.EncryptPassword;
+import com.sampath.assignment.helper.JWTHelper;
 import com.sampath.assignment.mapper.CustomerMapper;
 import com.sampath.assignment.mapper.ProductMapper;
 import com.sampath.assignment.repo.CustomerRepo;
@@ -23,6 +24,7 @@ public class CustomerService {
     private final ProductMapper productMapper;
     private final ProductRepo productRepo;
     private final EncryptPassword encryptPassword;
+    private final JWTHelper jwtHelper;
 
     public String createCustomer(@Valid CustomerRequest request) {
         Customer customer = mapper.toEntity(request);
@@ -63,5 +65,15 @@ public class CustomerService {
     public String getProduct(ProductDTO request) {
         List<Product> product=productRepo.findTop2ByPriceRange(request.min(),request.max());
         return product == null ? "no product found": product.toString();
+    }
+
+    public String login(@Valid CustomerRequest request) {
+        Customer customer =customerRepo.findByEmail(request.email()).orElse(null);
+        if(!encryptPassword.validates(request.password(), customer.getPassword())) {
+            return "Wrong Password or Email";
+        }
+
+        return jwtHelper.generateToken(request.email());
+
     }
 }
