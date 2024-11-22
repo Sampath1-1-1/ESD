@@ -1,15 +1,15 @@
-package com.sampath.assignment;
+package com.sampath.miniproject;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-public class AssignmentApplication {
+public class MiniProjectApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AssignmentApplication.class, args);
-//		System.out.print("hello");
+		SpringApplication.run(MiniProjectApplication.class, args);
+		System.out.print("hello");
 	}
 
 }
